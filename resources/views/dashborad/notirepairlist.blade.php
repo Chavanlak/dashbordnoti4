@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>รายละเอียดแจ้งซ่อม</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="p-4">
+
+    <h3>รายละเอียดแจ้งซ่อม</h3>
+
+    {{-- แสดงข้อความแจ้งเตือนความสำเร็จ --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>รหัสแจ้งซ่อม</th>
+                <th>อุปกรณ์</th>
+                <th>รายละเอียด</th>
+                <th>วันที่แจ้ง</th>
+                <th>สถานะ</th>
+                <th>กดอัพเดทสถานะ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($noti as $item)
+                <tr>
+                    <td>{{ $item->NotirepairId }}</td>
+                    <td>{{ $item->equipmentId }}</td>
+                    <td>{{ $item->DeatailNotirepair }}</td>
+                    <td>{{ $item->DateNotirepair }}</td>
+                    
+                    {{-- ดึงค่าสถานะที่ถูก JOIN มาจาก statustracking และกำหนดสี Badge --}}
+                    <td>
+                        @php
+                            // ใช้ $item->status ที่ถูก Join เข้ามา
+                            $status_text = $item->status ?? 'ยังไม่ได้รับของ'; // กำหนดสถานะเริ่มต้นถ้าเป็น NULL
+                            $badge_class = 'bg-secondary';
+    
+                            switch ($status_text) {
+                                case 'ซ่อมงานเสร็จเเล้ว':
+                                    $badge_class = 'bg-success'; // เขียว: เสร็จสมบูรณ์
+                                    break;
+                                case 'ได้รับของเเล้ว':
+                                    $badge_class = 'bg-primary'; // น้ำเงิน: รับเรื่องแล้ว
+                                    break;
+                                case 'ยังไม่ได้รับของ':
+                                    $badge_class = 'bg-danger'; // แดง: ยังไม่เริ่ม
+                                    break;
+                                case 'ยังไม่ส่งSuplier':
+                                case 'ส่งSuplierเเล้ว':
+                                case 'ยังไม่ดำเนินการซ่อม':
+                                    $badge_class = 'bg-warning text-dark'; // ส้ม/เหลือง: กำลังดำเนินการ
+                                    break;
+                                default:
+                                    $badge_class = 'bg-secondary'; // เทา: สถานะอื่นๆ ที่ไม่ระบุ
+                                    break;
+                            }
+                        @endphp
+                        <span class="badge {{ $badge_class }}">{{ $status_text }}</span>
+                    </td>
+                    
+                    {{-- ปุ่มกดอัพเดทสถานะ --}}
+                    <td>
+                        @if ($status_text === 'ซ่อมงานเสร็จเเล้ว')
+                            {{-- ถ้าเสร็จสมบูรณ์แล้ว ไม่ต้องมีปุ่มอัปเดต --}}
+                            <span class="text-success">เสร็จสิ้น</span>
+                        @elseif ($status_text === 'ยังไม่ได้รับของ')
+                            {{-- สถานะแรก: แสดงปุ่มกดรับของเท่านั้น --}}
+                            <form action="{{ route('noti.accept', $item->NotirepairId) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    กดรับของ
+                                </button>
+                            </form>
+                        @else
+                            {{-- สถานะอื่นๆ ทั้งหมด: แสดงปุ่มอัปเดตสถานะ --}}
+                            <a href="{{ route('noti.show_update_form', $item->NotirepairId) }}"
+                                class="btn btn-sm btn-warning">
+                                อัพเดต
+                            </a>
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <a href="{{ url()->previous() }}" class="btn btn-secondary">ย้อนกลับ</a>
+
+    {{-- เพิ่ม script สำหรับ Bootstrap 5 เพื่อให้ alert ใช้งานได้ --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
