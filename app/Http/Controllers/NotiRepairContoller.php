@@ -89,9 +89,16 @@ public static function reciveNotirepair($notirepaitid){
     return view('dashborad.notripair', compact('recivenoti'));
 
 }
+//ส่วนของการกดรับ
 public static function acceptNotisRepair($notirepaitid){
+    //acceot พอ save ในการกดรับให้ redirect ไป route Route::get('/updatestatus/form/{notirepaitid}'
+    //,[NotiRepairContoller::class,'showUpdateStatusForm'])->name('noti.show_update_form');
 $acceptnoti = StatustrackingRepository::acceptNotirepair($notirepaitid);
-return redirect()->route('noti.show_update_form', ['notirepaitid' => $notirepaitid])
+// return redirect()->route('noti.show_update_form', ['notirepaitid' => $notirepaitid])
+//         ->with('success', 'รับเรื่องเรียบร้อยแล้ว! เข้าสู่หน้าอัพเดตสถานะ');
+
+// }
+return redirect()->route('noti.list', ['notirepaitid' => $notirepaitid])
         ->with('success', 'รับเรื่องเรียบร้อยแล้ว! เข้าสู่หน้าอัพเดตสถานะ');
 
 }

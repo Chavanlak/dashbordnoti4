@@ -72,8 +72,8 @@ Route::post('/status/change/technicial/{statustrackingId}', [StatustrackingContr
 
 //checkNotiRepair
 // Route::get('/noti',[NotiRepairContoller::class,'checkNotiRepair']);
-Route::get('/noti/{notirepaitid}',[NotiRepairContoller::class,'reciveNotirepair']);
-Route::get('/recive/{notirepaitid}',[NotiRepairContoller::class,'acceptNotisRepair']);
+
+// Route::get('/recive/{notirepaitid}',[NotiRepairContoller::class,'acceptNotisRepair']);
 // Route::post('/noti/{notirepaitid}/receive', [NotiRepairContoller::class, 'acceptNotisRepair'])->name('noti.receive');
 // Route::post('/updaterecive/{notirepaitid}',[NotiRepairContoller::class,'updateStatus'])->name('notiupdate');
 // Route::post('/noti/accept/{notirepaitid}', [NotiRepairContoller::class,'acceptNotisRepair'])->name('noti.accept');
@@ -81,7 +81,7 @@ Route::get('/recive/{notirepaitid}',[NotiRepairContoller::class,'acceptNotisRepa
 
 // Route สำหรับแสดงรายการแจ้งซ่อมทั้งหมด
 Route::get('/noti',[NotiRepairContoller::class,'checkNotiRepair'])->name('noti.list');
-
+// Route::get('/noti/{notirepaitid}',[NotiRepairContoller::class,'reciveNotirepair']);
 // // 1. (GET) Route สำหรับแสดงหน้าฟอร์มอัพเดตสถานะ (เป้าหมายของการ Redirect)
 Route::get('/updatestatus/form/{notirepaitid}',[NotiRepairContoller::class,'showUpdateStatusForm'])->name('noti.show_update_form');
 

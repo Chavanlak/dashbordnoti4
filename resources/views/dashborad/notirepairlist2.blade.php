@@ -60,7 +60,7 @@
     
                                 if ($status_text === 'ได้รับของแล้ว' || $status_text === 'เสร็จสิ้น') {
                                     $badge_class = 'bg-success';
-                                } elseif ($status_text === 'กำลังดำเนินการ') {
+                                } elseif ($status_text === 'กำลังดำเนินการซ่อม') {
                                     $badge_class = 'bg-warning text-dark';
                                 } elseif ($status_text === 'ยังไม่ได้รับของ') {
                                     $badge_class = 'bg-danger';
